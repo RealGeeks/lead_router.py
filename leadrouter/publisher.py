@@ -22,8 +22,19 @@ class Publisher(object):
                  beanstalkd_tube='leadrouter'):
         self.host = host
         self.auth = (user, token)
-        self.queue = beanstalkc.Connection(beanstalkd_host, beanstalkd_port)
-        self.queue.use(beanstalkd_tube)
+        self.bean_host = beanstalkd_host
+        self.bean_port = beanstalkd_port
+        self.bean_tube = beanstalkd_tube
+        self.queue = None
+
+    def connect(self):
+        self.queue = beanstalkc.Connection(self.bean_host, self.bean_port)
+        self.queue.use(self.bean_tube)
+
+    def close(self):
+        if self.queue:
+            self.queue.close()
+            self.queue = None
 
     def create_lead(self, site_uuid, lead):
         return self._publish('create_lead', {
@@ -46,6 +57,8 @@ class Publisher(object):
         })
 
     def _publish(self, method, params):
+        if not self.queue:
+            self.connect()
         self.queue.put(json.dumps({
             'host': self.host,
             'auth': self.auth,

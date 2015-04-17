@@ -8,11 +8,11 @@ import mock
 from leadrouter import Publisher
 
 
-def new_publisher(*args, **kwargs):
-    try:
-        return Publisher(*args, **kwargs)
-    except beanstalkc.SocketError:
-        pytest.fail('beanstalkd not running. See README.md for instructions')
+@pytest.fixture
+def publisher(request):
+    pub = Publisher('api.com', 'user', 'secret', beanstalkd_tube=generate_tube())
+    request.addfinalizer(pub.close)
+    return pub
 
 def last_package(tube):
     '''
@@ -40,51 +40,45 @@ def generate_tube():
     return str(uuid.uuid4())
 
 
-def test_create_lead():
-    pub = Publisher('api.com', 'user', 'secret')
-    pub._publish = mock.Mock()
+def test_create_lead(publisher):
+    publisher._publish = mock.Mock()
 
-    pub.create_lead('123', {'email': 'lead@gmail.com'})
+    publisher.create_lead('123', {'email': 'lead@gmail.com'})
 
-    pub._publish.assert_called_once_with('create_lead', {
+    publisher._publish.assert_called_once_with('create_lead', {
         'site_uuid': '123',
         'lead': {'email': 'lead@gmail.com'}
     })
 
-def test_update_lead():
-    pub = Publisher('api.com', 'user', 'secret')
-    pub._publish = mock.Mock()
+def test_update_lead(publisher):
+    publisher._publish = mock.Mock()
 
-    pub.update_lead('123', 'abc', {'email': 'lead@gmail.com'})
+    publisher.update_lead('123', 'abc', {'email': 'lead@gmail.com'})
 
-    pub._publish.assert_called_once_with('update_lead', {
+    publisher._publish.assert_called_once_with('update_lead', {
         'site_uuid': '123',
         'lead_uuid': 'abc',
         'lead': {'email': 'lead@gmail.com'}
     })
 
-def test_add_activities():
-    pub = Publisher('api.com', 'user', 'secret')
-    pub._publish = mock.Mock()
+def test_add_activities(publisher):
+    publisher._publish = mock.Mock()
 
-    pub.add_activities('123', 'abc', [{'type': 'a', 'type': 'b'}])
+    publisher.add_activities('123', 'abc', [{'type': 'a', 'type': 'b'}])
 
-    pub._publish.assert_called_once_with('add_activities', {
+    publisher._publish.assert_called_once_with('add_activities', {
         'site_uuid': '123',
         'lead_uuid': 'abc',
         'activities': [{'type': 'a', 'type': 'b'}],
     })
 
-def test_publish():
-    tube = generate_tube()
-    pub = new_publisher('api.com', 'user', 'secret', beanstalkd_tube=tube)
-
-    pub._publish('create_lead', params={
+def test_publish(publisher):
+    publisher._publish('create_lead', params={
         'lead': {'email': 'lead@gmail.com'},
         'site_uuid': '123-abc',
     })
 
-    package = last_package(tube)
+    package = last_package(publisher.bean_tube)
 
     assert package == {
         'host': 'api.com',
