@@ -1,6 +1,10 @@
 
 # Client to `lead_router`
 
+Install it
+
+    $ pip install git+https://github.com/RealGeeks/lead_router.py.git
+
 First get a `user` and `token` from the `lead_router` project, it will
 identify your project and which permissions you have.
 
