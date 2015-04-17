@@ -65,7 +65,15 @@ run:
 
     $ pip install -e .
 
-And run tests:
+In order to run all tests [`beanstalkd`](http://kr.github.io/beanstalkd/) need to be
+running:
+
+    $ brew install beanstalkd
+    $ beanstalkd -V
+    pid 80350
+    bind 4 0.0.0.0:11300
+
+then run tests:
 
     $ python setup.py test
 
