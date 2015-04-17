@@ -22,7 +22,7 @@ class PyTest(TestCommand):
         sys.exit(errno)
 
 setup(
-    name='stynky',
+    name='leadrouter',
     version='0.0.1',
 
     description='Python Client to lead_router REST Receiver',
