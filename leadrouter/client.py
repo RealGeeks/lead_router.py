@@ -32,15 +32,15 @@ class Client(object):
         self.auth = requests.auth.HTTPBasicAuth(user, token)
 
     def create_lead(self, site_uuid, lead):
-        url = '/rest/{0}/leads'.format(site_uuid)
+        url = '/rest/sites/{0}/leads'.format(site_uuid)
         return self._request('post', url, lead)
 
     def update_lead(self, site_uuid, lead_uuid, lead):
-        url = '/rest/{0}/leads/{1}'.format(site_uuid, lead_uuid)
+        url = '/rest/sites/{0}/leads/{1}'.format(site_uuid, lead_uuid)
         return self._request('put', url, lead)
 
     def add_activities(self, site_uuid, lead_uuid, activities):
-        url = '/rest/{0}/leads/{1}/activities'.format(site_uuid, lead_uuid)
+        url = '/rest/sites/{0}/leads/{1}/activities'.format(site_uuid, lead_uuid)
         return self._request('post', url, activities)
 
     def _request(self, method, url, body):

@@ -13,7 +13,7 @@ def test_create_lead_request():
 
     c.create_lead('123', {'email': 'lead@gmail.com'})
 
-    c._request.assert_called_once_with('post', '/rest/123/leads', 
+    c._request.assert_called_once_with('post', '/rest/sites/123/leads',
                                        {'email': 'lead@gmail.com'})
 
 def test_update_lead_request():
@@ -22,7 +22,7 @@ def test_update_lead_request():
 
     c.update_lead('123', '432', {'email': 'lead@gmail.com'})
 
-    c._request.assert_called_once_with('put', '/rest/123/leads/432', 
+    c._request.assert_called_once_with('put', '/rest/sites/123/leads/432',
                                        {'email': 'lead@gmail.com'})
 
 def test_add_activities_request():
@@ -31,7 +31,7 @@ def test_add_activities_request():
 
     c.add_activities('123', '543', [{'type': 'one'}, {'type': 'two'}])
 
-    c._request.assert_called_once_with('post', '/rest/123/leads/543/activities', 
+    c._request.assert_called_once_with('post', '/rest/sites/123/leads/543/activities',
                                        [{'type': 'one'}, {'type': 'two'}])
 
 
