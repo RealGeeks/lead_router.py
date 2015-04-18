@@ -88,3 +88,31 @@ def test_publish(publisher):
             'lead': {'email': 'lead@gmail.com'},
             'site_uuid': '123-abc'},
         }
+
+def test_publish_priorities(publisher):
+    publisher._publish('update_lead', params={
+        'lead': {'email': 'lead@gmail.com'},
+        'site_uuid': '123-abc',
+        'lead_uuid': 'abc',
+    })
+    publisher._publish('add_activities', params={
+        'site_uuid': '123',
+        'lead_uuid': 'abc',
+        'activities': [{'type': 'a', 'type': 'b'}],
+    })
+    publisher._publish('create_lead', params={
+        'lead': {'email': 'lead@gmail.com'},
+        'site_uuid': '123-abc',
+    })
+
+    # 1st
+    package = last_package(publisher.bean_tube)
+    assert package['method'] == 'create_lead'
+
+    # 2nd
+    package = last_package(publisher.bean_tube)
+    assert package['method'] == 'add_activities'
+
+    # 3rd
+    package = last_package(publisher.bean_tube)
+    assert package['method'] == 'update_lead'

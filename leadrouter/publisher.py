@@ -2,6 +2,12 @@ import json  # todo: instal ujson
 
 import beanstalkc
 
+PRIORITIES = {
+    'create_lead': 0,
+    'add_activities': 3,
+    'update_lead': 6,
+}
+
 class Publisher(object):
     '''
     Producer implements the same interface as Client but instead of sending requests
@@ -64,4 +70,4 @@ class Publisher(object):
             'auth': self.auth,
             'method': method,
             'params': params
-        }))
+        }), priority=PRIORITIES[method])
