@@ -63,11 +63,21 @@ class Publisher(object):
         })
 
     def _publish(self, method, params):
+        '''Format and send a job to beanstalk
+
+        It won't retry on failure but it knows how to reconnect if the connection
+        was lost at some point after connect()
+        '''
         if not self.queue:
             self.connect()
-        self.queue.put(json.dumps({
+        body = json.dumps({
             'host': self.host,
             'auth': self.auth,
             'method': method,
             'params': params
-        }), priority=PRIORITIES[method])
+        })
+        try:
+            self.queue.put(body, priority=PRIORITIES[method])
+        except beanstalkc.SocketError:
+            self.connect()
+            self.queue.put(body, priority=PRIORITIES[method])
