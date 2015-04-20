@@ -8,7 +8,7 @@ class PyTest(TestCommand):
 
     def initialize_options(self):
         TestCommand.initialize_options(self)
-        self.pytest_args = []
+        self.pytest_args = ['--cov-config', '.coveragerc', '--cov', 'leadrouter']
 
     def finalize_options(self):
         TestCommand.finalize_options(self)
@@ -49,10 +49,16 @@ setup(
 
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
 
-    install_requires=['requests', 'beanstalkc'],
-    tests_require=['pytest', 'mock', 'httpretty'],
+    install_requires=['requests', 'beanstalkc', 'click', 'pyyaml'],
+    tests_require=['pytest', 'pytest-cov', 'mock', 'httpretty'],
 
     cmdclass={
         'test': PyTest,
+    },
+
+    entry_points={
+        'console_scripts': [
+            'leadrouter = leadrouter.cmd:cmd',
+        ],
     },
 )

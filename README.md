@@ -80,3 +80,9 @@ then run tests:
 If you're familiar with py.test custom arguments can be provided:
 
     $ python setup.py test --pytest-args='-v --tb=short' 
+
+It will calculate the coverage, if you want to view the coverage report
+in html, use:
+
+    $ coverage html  # you'll probably need to 'pip install coverage' first
+    $ open htmlcov/index.html
