@@ -61,6 +61,8 @@ class Subscriber(object):
             if result.retry:
                 job.release(delay=RETRY_DELAY)
                 return
+        else:
+            self.alerts.debug('job processed', package)
         job.delete()
 
     def parse(self, job):

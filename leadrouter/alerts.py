@@ -10,24 +10,29 @@ class Alerts(object):
     def __init__(self, logger):
         self.logger = logger
 
-    def info(self, msg):
-        '''Send notification message as INFO to logger'''
-        self.logger.info(msg)
+    def info(self, msg, details={}):
+        '''Send INFO message to logger'''
+        self.logger.info(self._format(msg, details))
+
+    def debug(self, msg, details={}):
+        '''Send DEBUG message to logger'''
+        self.logger.debug(self._format(msg, details))
 
     def critical(self, msg, details={}):
-        '''Send ERROR message to logger, pretty printing the details and send
-        notification to pagerduty
-        '''
+        '''Send ERROR message to logger and send notification to pagerduty'''
+        self.logger.error(self._format(msg, details))
+
+    def _format(self, msg, details):
         s = msg
         if details:
             s += '\n'
             s += pprint.pformat(details)
-        self.logger.error(s)
-
+        return s
 
 class NullAlerts(object):
-    def info(self, msg):
+    def info(self, msg, details={}):
         pass
-
+    def debug(self, msg, details={}):
+        pass
     def critical(self, msg, details={}):
         pass
