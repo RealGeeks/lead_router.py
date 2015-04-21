@@ -1,6 +1,9 @@
 import json  # todo: instal ujson
+import datetime
 
 import beanstalkc
+
+from . import timestamp
 
 PRIORITIES = {
     'create_lead': 0,
@@ -19,6 +22,9 @@ class Publisher(object):
 
     The job published in the tube has all information necessary to instantiate a
     valid Client() object (with credentials) and call one of it's methods
+
+    We automatically set 'created' to both lead and all activities, because the job
+    could take some time to be successfully processed
 
     '''
 
@@ -43,12 +49,15 @@ class Publisher(object):
             self.queue = None
 
     def create_lead(self, site_uuid, lead):
+        set_timestamp(lead)
+        set_timestamp(*lead.get('activities', []))
         return self._publish('create_lead', {
             'site_uuid': site_uuid,
             'lead': lead,
         })
 
     def update_lead(self, site_uuid, lead_uuid, lead):
+        set_timestamp(*lead.get('activities', []))
         return self._publish('update_lead', {
             'site_uuid': site_uuid,
             'lead_uuid': lead_uuid,
@@ -56,6 +65,7 @@ class Publisher(object):
         })
 
     def add_activities(self, site_uuid, lead_uuid, activities):
+        set_timestamp(*activities)
         return self._publish('add_activities', {
             'site_uuid': site_uuid,
             'lead_uuid': lead_uuid,
@@ -81,3 +91,10 @@ class Publisher(object):
         except beanstalkc.SocketError:
             self.connect()
             self.queue.put(body, priority=PRIORITIES[method])
+
+
+def set_timestamp(*objects):
+    # todo: if 'created' already exist need to ensure it's timezone aware
+    now = timestamp.now()
+    for obj in objects:
+        obj.setdefault('created', now.isoformat())

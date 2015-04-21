@@ -4,9 +4,18 @@ import uuid
 import beanstalkc
 import pytest
 import mock
+from freezegun import freeze_time
 
 from leadrouter import Publisher
 
+def setup_function(f):
+    global freezer
+    freezer = freeze_time('2014-01-01 08:15:20')
+    freezer.start()
+
+def teardown_function(f):
+    global freezer
+    freezer.stop()
 
 @pytest.fixture
 def publisher(request):
@@ -43,33 +52,99 @@ def generate_tube():
 def test_create_lead(publisher):
     publisher._publish = mock.Mock()
 
-    publisher.create_lead('123', {'email': 'lead@gmail.com'})
+    publisher.create_lead('123', {
+        'email': 'lead@gmail.com',
+        'activities': [{'type': 'a'}],
+    })
 
     publisher._publish.assert_called_once_with('create_lead', {
         'site_uuid': '123',
-        'lead': {'email': 'lead@gmail.com'}
+        'lead': {
+            'email': 'lead@gmail.com',
+            'created': '2014-01-01T08:15:20+00:00',                    # set timestamp
+            'activities': [
+                {'type': 'a', 'created': '2014-01-01T08:15:20+00:00'}, # set timestamp
+            ],
+        }
+    })
+
+def test_create_lead_dont_override_timestamps(publisher):
+    publisher._publish = mock.Mock()
+
+    publisher.create_lead('123', {
+        'email': 'lead@gmail.com',
+        'created': '2010-01-01T08:15:20',
+        'activities': [
+            {'type': 'b', 'created': '2010-01-01T08:15:20'},
+        ],
+    })
+
+    publisher._publish.assert_called_once_with('create_lead', {
+        'site_uuid': '123',
+        'lead': {
+            'email': 'lead@gmail.com',
+            'created': '2010-01-01T08:15:20',
+            'activities': [
+                {'type': 'b', 'created': '2010-01-01T08:15:20'},
+            ],
+        }
     })
 
 def test_update_lead(publisher):
     publisher._publish = mock.Mock()
 
-    publisher.update_lead('123', 'abc', {'email': 'lead@gmail.com'})
+    publisher.update_lead('123', 'abc', {
+        'email': 'lead@gmail.com',
+        'activities': [{'type': 'a'}],
+    })
 
     publisher._publish.assert_called_once_with('update_lead', {
         'site_uuid': '123',
         'lead_uuid': 'abc',
-        'lead': {'email': 'lead@gmail.com'}
+        'lead': {
+            'email': 'lead@gmail.com',
+            'activities': [
+                {'type': 'a', 'created': '2014-01-01T08:15:20+00:00'}, # set timestamp
+            ],
+        }
+    })
+
+def test_update_lead_dont_override_timestamps(publisher):
+    publisher._publish = mock.Mock()
+
+    publisher.update_lead('123', 'abc', {
+        'email': 'lead@gmail.com',
+        'activities': [
+            {'type': 'b', 'created': '2010-01-01T08:15:20'},
+        ],
+    })
+
+    publisher._publish.assert_called_once_with('update_lead', {
+        'site_uuid': '123',
+        'lead_uuid': 'abc',
+        'lead': {
+            'email': 'lead@gmail.com',
+            'activities': [
+                {'type': 'b', 'created': '2010-01-01T08:15:20'},
+            ],
+        }
     })
 
 def test_add_activities(publisher):
     publisher._publish = mock.Mock()
 
-    publisher.add_activities('123', 'abc', [{'type': 'a', 'type': 'b'}])
+    publisher.add_activities('123', 'abc', [
+        {'type': 'a', 'created': '2010-01-01T08:15:20'},
+        {'type': 'b'},
+    ])
 
     publisher._publish.assert_called_once_with('add_activities', {
         'site_uuid': '123',
         'lead_uuid': 'abc',
-        'activities': [{'type': 'a', 'type': 'b'}],
+        'activities': [
+            {'type': 'a', 'created': '2010-01-01T08:15:20'},
+            {'type': 'b', 'created': '2014-01-01T08:15:20+00:00'}, # set timestamp,
+        ],
     })
 
 def test_publish(publisher):
