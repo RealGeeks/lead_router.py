@@ -37,7 +37,7 @@ class Client(object):
 
     def update_lead(self, site_uuid, lead_uuid, lead):
         url = '/rest/sites/{0}/leads/{1}'.format(site_uuid, lead_uuid)
-        return self._request('put', url, lead)
+        return self._request('patch', url, lead)
 
     def add_activities(self, site_uuid, lead_uuid, activities):
         url = '/rest/sites/{0}/leads/{1}/activities'.format(site_uuid, lead_uuid)

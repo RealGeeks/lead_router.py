@@ -22,7 +22,7 @@ def test_update_lead_request():
 
     c.update_lead('123', '432', {'email': 'lead@gmail.com'})
 
-    c._request.assert_called_once_with('put', '/rest/sites/123/leads/432',
+    c._request.assert_called_once_with('patch', '/rest/sites/123/leads/432',
                                        {'email': 'lead@gmail.com'})
 
 def test_add_activities_request():
