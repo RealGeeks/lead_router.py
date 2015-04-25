@@ -9,6 +9,7 @@ PRIORITIES = {
     'create_lead': 0,
     'add_activities': 3,
     'update_lead': 6,
+    'create_potential_seller_lead': 6,
 }
 
 class Publisher(object):
