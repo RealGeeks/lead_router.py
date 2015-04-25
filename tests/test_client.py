@@ -34,6 +34,15 @@ def test_add_activities_request():
     c._request.assert_called_once_with('post', '/rest/sites/123/leads/543/activities',
                                        [{'type': 'one'}, {'type': 'two'}])
 
+def test_create_potential_seller_lead_request():
+    c = Client('api.com', 'user', 'token')
+    c._request = mock.Mock()
+
+    c.create_potential_seller_lead('123', {'id': '123'})
+
+    c._request.assert_called_once_with('post', '/rest/sites/123/potential-seller-leads',
+                                       {'id': '123'})
+
 
 # _request() is the method used by all methods of Client(), so we test it
 # exhaustively

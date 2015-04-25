@@ -72,6 +72,14 @@ class Publisher(object):
             'activities': activities,
         })
 
+    def create_potential_seller_lead(self, site_uuid, lead):
+        set_timestamp(lead)
+        set_timestamp(*lead.get('activities', []))
+        return self._publish('create_potential_seller_lead', {
+            'site_uuid': site_uuid,
+            'lead': lead,
+        })
+
     def _publish(self, method, params):
         '''Format and send a job to beanstalk
 

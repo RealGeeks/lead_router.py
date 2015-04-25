@@ -43,6 +43,10 @@ class Client(object):
         url = '/rest/sites/{0}/leads/{1}/activities'.format(site_uuid, lead_uuid)
         return self._request('post', url, activities)
 
+    def create_potential_seller_lead(self, site_uuid, lead):
+        url = '/rest/sites/{0}/potential-seller-leads'.format(site_uuid)
+        return self._request('post', url, lead)
+
     def _request(self, method, url, body):
         try:
             resp = requests.request(method, self.host+url, data=json.dumps(body),

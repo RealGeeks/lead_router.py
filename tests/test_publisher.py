@@ -147,6 +147,47 @@ def test_add_activities(publisher):
         ],
     })
 
+def test_create_potential_seller_lead(publisher):
+    publisher._publish = mock.Mock()
+
+    publisher.create_potential_seller_lead('123', {
+        'source_details': 'here',
+        'activities': [{'type': 'a'}],
+    })
+
+    publisher._publish.assert_called_once_with('create_potential_seller_lead', {
+        'site_uuid': '123',
+        'lead': {
+            'source_details': 'here',
+            'created': '2014-01-01T08:15:20+00:00',                    # set timestamp
+            'activities': [
+                {'type': 'a', 'created': '2014-01-01T08:15:20+00:00'}, # set timestamp
+            ],
+        }
+    })
+
+def test_create_potential_seller_lead_dont_override_timestamps(publisher):
+    publisher._publish = mock.Mock()
+
+    publisher.create_potential_seller_lead('123', {
+        'source_details': 'here',
+        'created': '2010-01-01T08:15:20',
+        'activities': [
+            {'type': 'b', 'created': '2010-01-01T08:15:20'},
+        ],
+    })
+
+    publisher._publish.assert_called_once_with('create_potential_seller_lead', {
+        'site_uuid': '123',
+        'lead': {
+            'source_details': 'here',
+            'created': '2010-01-01T08:15:20',
+            'activities': [
+                {'type': 'b', 'created': '2010-01-01T08:15:20'},
+            ],
+        }
+    })
+
 def test_publish(publisher):
     publisher._publish('create_lead', params={
         'lead': {'email': 'lead@gmail.com'},
