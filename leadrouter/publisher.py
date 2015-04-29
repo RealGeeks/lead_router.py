@@ -107,3 +107,42 @@ def set_timestamp(*objects):
     now = timestamp.now()
     for obj in objects:
         obj.setdefault('created', now.isoformat())
+
+
+class DebugPublisher(object):
+    '''
+    DebugPublisher implements the same interface of Publisher() but doesn't talk
+    to beanstalkd, just saves debug information of all method calls to a file
+
+    '''
+
+    FILEPATH = '/tmp/leadrouter-queue.txt'
+
+    def __init__(self, *args, **kwargs):
+        self.filepath = kwargs.get('filepath', self.FILEPATH)
+        self._record(self._new_section(), '__init__()')
+
+    def connect(self):
+        self._record('connect()')
+
+    def close(self):
+        self._record('close()')
+
+    def create_lead(self, site_uuid, lead):
+        self._record('create_lead("{0}", {1})'.format(site_uuid, repr(lead)))
+
+    def update_lead(self, site_uuid, lead_uuid, lead):
+        self._record('create_lead("{0}", "{1}", {2})'.format(site_uuid, lead_uuid, repr(lead)))
+
+    def add_activities(self, site_uuid, lead_uuid, activities):
+        self._record('create_lead("{0}", "{1}", {2})'.format(site_uuid, lead_uuid, repr(activities)))
+
+    def _new_section(self):
+        return ('-------------------' +
+                datetime.datetime.utcnow().strftime('%a, %e %b %Y %H:%M:%S %z') +
+                '-------------------')
+
+    def _record(self, *lines):
+        with open(self.filepath, 'a') as fobj:
+            for line in lines:
+                fobj.write(line + '\n')
