@@ -132,10 +132,10 @@ class DebugPublisher(object):
         self._record('create_lead("{0}", {1})'.format(site_uuid, repr(lead)))
 
     def update_lead(self, site_uuid, lead_uuid, lead):
-        self._record('create_lead("{0}", "{1}", {2})'.format(site_uuid, lead_uuid, repr(lead)))
+        self._record('update_lead("{0}", "{1}", {2})'.format(site_uuid, lead_uuid, repr(lead)))
 
     def add_activities(self, site_uuid, lead_uuid, activities):
-        self._record('create_lead("{0}", "{1}", {2})'.format(site_uuid, lead_uuid, repr(activities)))
+        self._record('add_activities("{0}", "{1}", {2})'.format(site_uuid, lead_uuid, repr(activities)))
 
     def _new_section(self):
         return ('-------------------' +
