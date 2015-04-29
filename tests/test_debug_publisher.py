@@ -44,9 +44,11 @@ def test_debug_publisher_lead_methods(tmpdir):
     p.create_lead('id-123', {'email': 'lead@gmail.com'})
     p.update_lead('id-123', 'ld-455', {'email': 'lead@gmail.com'})
     p.add_activities('id-123', 'ld-455', [{'type': 'contact_emailed'}])
+    p.create_potential_seller_lead('id-123', {'email': 'lead@gmail.com'})
 
     content = filepath.read().split('\n')
 
     assert content[2] == '''create_lead("id-123", {'email': 'lead@gmail.com'})'''
     assert content[3] == '''update_lead("id-123", "ld-455", {'email': 'lead@gmail.com'})'''
     assert content[4] == '''add_activities("id-123", "ld-455", [{'type': 'contact_emailed'}])'''
+    assert content[5] == '''create_potential_seller_lead("id-123", {'email': 'lead@gmail.com'})'''

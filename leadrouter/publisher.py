@@ -137,6 +137,9 @@ class DebugPublisher(object):
     def add_activities(self, site_uuid, lead_uuid, activities):
         self._record('add_activities("{0}", "{1}", {2})'.format(site_uuid, lead_uuid, repr(activities)))
 
+    def create_potential_seller_lead(self, site_uuid, lead):
+        self._record('create_potential_seller_lead("{0}", {1})'.format(site_uuid, repr(lead)))
+
     def _new_section(self):
         return ('-------------------' +
                 datetime.datetime.utcnow().strftime('%a, %e %b %Y %H:%M:%S %z') +
