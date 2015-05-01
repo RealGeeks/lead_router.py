@@ -24,7 +24,7 @@ Send a new lead.
  - `site_uuid` is a string with the RG2 Site UUID
  - `lead` id a dictionary with lead fields
 
-See [`https://github.com/RealGeeks/lead_router/wiki/Lead-Router-REST-API#post-sitessite-uuidleads`](https://github.com/RealGeeks/lead_router/wiki/Lead-Router-REST-API#post-sitessite-uuidleads)
+See [`https://github.com/RealGeeks/lead_router/wiki/Incoming-API#post-sitessite-uuidleads`](https://github.com/RealGeeks/lead_router/wiki/Incoming-API#post-sitessite-uuidleads)
 
 #### `update_lead(site_uuid, lead_uuid, lead)`
 
@@ -34,7 +34,7 @@ Update an existing lead.
  - `lead_uuid` is a string with the Lead Manager Lead UUID
  - `lead` id a dictionary with lead fields to be overriden
 
-See [`https://github.com/RealGeeks/lead_router/wiki/Lead-Router-REST-API#put-sitessite-uuidleadslead-uuid`](https://github.com/RealGeeks/lead_router/wiki/Lead-Router-REST-API#put-sitessite-uuidleadslead-uuid)
+See [`https://github.com/RealGeeks/lead_router/wiki/Incoming-API#put-sitessite-uuidleadslead-uuid`](https://github.com/RealGeeks/lead_router/wiki/Incoming-API#put-sitessite-uuidleadslead-uuid)
 
 #### `add_activities(site_uuid, lead_uuid, activities)`
 
@@ -44,7 +44,7 @@ Update an existing lead.
  - `lead_uuid` is a string with the Lead Manager Lead UUID
  - `activities` is a list of dictionaries, each dictionary is an activitity
 
-See [`https://github.com/RealGeeks/lead_router/wiki/Lead-Router-REST-API#post-sitessite-uuidleadslead-uuidactivities`](https://github.com/RealGeeks/lead_router/wiki/Lead-Router-REST-API#post-sitessite-uuidleadslead-uuidactivities)
+See [`https://github.com/RealGeeks/lead_router/wiki/Incoming-API#post-sitessite-uuidleadslead-uuidactivities`](https://github.com/RealGeeks/lead_router/wiki/Incoming-API#post-sitessite-uuidleadslead-uuidactivities)
 
 #### `create_potential_seller_lead(site_uuid, lead)`
 
