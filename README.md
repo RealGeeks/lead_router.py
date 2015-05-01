@@ -46,6 +46,15 @@ Update an existing lead.
 
 See [`https://github.com/RealGeeks/lead_router/wiki/Lead-Router-REST-API#post-sitessite-uuidleadslead-uuidactivities`](https://github.com/RealGeeks/lead_router/wiki/Lead-Router-REST-API#post-sitessite-uuidleadslead-uuidactivities)
 
+#### `create_potential_seller_lead(site_uuid, lead)`
+
+Send a new potential seller lead.  Somebody who attempted to view a property valuation but didn't sign-up to give contact details. So all we have is the property they looked at.
+
+ - `site_uuid` is a string with the RG2 Site UUID
+ - `lead` id a dictionary with lead fields
+
+See [`https://github.com/RealGeeks/lead_router/wiki/Incoming-API#post-sitessite_uuidpotential-seller-leads`](https://github.com/RealGeeks/lead_router/wiki/Incoming-API#post-sitessite_uuidpotential-seller-leads)
+
 ## Exceptions
 
 All methods return `None` on success.  On failure will raise `HTTPError` exception
@@ -57,6 +66,29 @@ or 500 the exception object will have two useful attributes;
  - `status_code`: integer with the response status code
  - `response_text`: original response body as string
 
+
+## Async send
+
+We have a client implementation that instead of sending requests directly just put them in a queue to be sent asynchronously, it's the `Publisher` and `subscriber`.
+
+Use `Publisher` the same way you would use `Client`:
+
+```python
+import leadrouter
+
+client = leadrouter.Publisher('receivers.leadrouter.realgeeks.com',
+                              user='me', token='secret')
+```
+
+extra arguments could be given to customize the `beanstalkd` address and tube to use: `beanstalkd_host`, `beanstalkd_port`, `beanstalkd_tube`.
+
+To consume the queue and actually make requests use:
+
+    $ leadrouter subscriber
+
+make sure it's using the same `beanstalkd` and same tube. The defaults should just work.
+
+There is also a `DebugPublisher` available for development.  If you have a project using `Publisher` but don't want to use `beanstalkd` locally, it will record all method calls in a file for debugging.
 
 # Development
 
