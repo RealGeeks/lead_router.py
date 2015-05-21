@@ -11,6 +11,7 @@ class PyTest(TestCommand):
         self.pytest_args = [
             '--cov-config', '.coveragerc',
             '--cov', 'leadrouter',
+            '--cov-report', 'term-missing',
             '--tb=short',
         ]
 

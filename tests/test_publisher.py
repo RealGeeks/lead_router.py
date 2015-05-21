@@ -232,3 +232,19 @@ def test_publish_priorities(publisher):
     # 3rd
     package = last_package(publisher.bean_tube)
     assert package['method'] == 'update_lead'
+
+def test_publish_reconnect(publisher):
+    publisher.queue = mock.Mock(['put', 'close'])
+    publisher.queue.put.side_effect = [beanstalkc.SocketError(), None]
+    publisher.connect = mock.Mock()
+
+    publisher._publish('create_lead', params={
+        'lead': {'email': 'lead@gmail.com'},
+        'site_uuid': '123-abc',
+    })
+
+    # queue.put() 1st call failed and second succeeded
+    assert publisher.queue.put.call_count == 2
+
+    # after queue.put() first call we called connect() again
+    assert publisher.connect.call_count == 1
