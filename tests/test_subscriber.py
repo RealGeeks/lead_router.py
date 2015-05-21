@@ -58,6 +58,26 @@ def test_handle_invalid_job():
 
     job.delete.assert_called_once_with()
 
+def test_handle_job_with_invalid_client_method():
+    job = mock.Mock(['delete', 'jid'])
+    job.jib = '123'
+    job.body = JOB_BODY_INVALID_METHOD  # parsed job but json has invalid Client method
+
+    sub = Subscriber()
+    sub.handle(job)
+
+    job.delete.assert_called_once_with()
+
+def test_handle_job_with_json_without_any_required_keys():
+    job = mock.Mock(['delete', 'jid'])
+    job.jib = '123'
+    job.body = JOB_BODY_MISSING_KEYS # parsed job but json is missing all keys
+
+    sub = Subscriber()
+    sub.handle(job)
+
+    job.delete.assert_called_once_with()
+
 def test_consume():
     '''consume is the main entrypoint of Subscriber, just make sure it's calling
     handle() for every loop iteration'''
@@ -90,6 +110,15 @@ VALID_JOB_BODY = json.dumps({
         'lead': {'email': 'lead@gmail.com'},
     },
 })
+
+JOB_BODY_INVALID_METHOD = json.dumps({
+    'host': 'api.com',
+    'auth': ['user', 'token'],
+    'method': 'client_doesnt_have_this_method',
+    'params': {},
+})
+
+JOB_BODY_MISSING_KEYS = json.dumps({})
 
 def assert_request_made_from_valid_job_body(request):
     '''Assert the given httpretty request was made using VALID_JOB_BODY spec'''

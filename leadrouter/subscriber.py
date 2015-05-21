@@ -90,7 +90,7 @@ STATUS_NO_RETRY = (
 
 RequestResult = namedtuple('RequestResult', (
     'success',        # boolean indicating if the request was successful
-    'retry',          # boolean indicating if called MUST retry the request
+    'retry',          # boolean indicating if caller MUST retry the request
     'error',          # error message string, if success is False
     'response_body',  # full response body when success is False, if available
     'response_status',# status code of response, if available
@@ -101,7 +101,13 @@ def make_request(package):
 
     Return a ProcessResult with information about what happened
     '''
-    method, params = build_client(package)
+    try:
+        method, params = build_client(package)
+    except Exception as ex:
+        return RequestResult(success=False, retry=False,
+                             error='invalid package format ({0}): {1}'
+                             .format(str(ex), package),
+                             response_body='', response_status=None)
     try:
         method(**params)
     except client.HTTPError as ex:
@@ -122,11 +128,15 @@ def make_request(package):
                          response_body='', response_status=None)
 
 def build_client(package):
-    '''Build a client.Client given the package from beanstalkd tube and return
-    one of it's methods as specified by package
+    '''Build a client.Client given the package from beanstalkd tube
 
     The package has all information we need to make the request, including
     which method to call on a Client object and credentials to use
+
+    Return value is a two element tuple:
+
+         (bound method of client, dict with arguments)
+
     '''
     cli = client.Client(package['host'], *package['auth'])
     method = getattr(cli, package['method'])
