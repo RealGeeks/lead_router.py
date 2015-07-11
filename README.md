@@ -118,3 +118,14 @@ in html, use:
 
     $ coverage html  # you'll probably need to 'pip install coverage' first
     $ open htmlcov/index.html
+
+# Production
+
+Each rg2 server has a `leadrouter subscriber` running, and there is a beanstalkd
+for each server.  See [config in rg2](https://github.com/RealGeeks/rg2/blob/master/server_config/supervisord.conf)
+
+To see the current status of all beanstalkd servers, run:
+
+    python stats.py
+
+you'll need to install [beanstool](https://github.com/tyba/beanstool)
