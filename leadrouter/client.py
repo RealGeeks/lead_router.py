@@ -65,7 +65,7 @@ def wrap_requests_exception(ex):
     information.  See HTTPError exception class
 
     '''
-    if ex.response is not None:
+    if getattr(ex, 'response', None) is not None:
         try:
             message = ex.response.json()['error']
         except ValueError:

@@ -119,3 +119,30 @@ def test_request_failed_to_be_sent(requests_request):
     assert http_error.original is exception
     assert http_error.status_code is None
     assert http_error.response_text is None
+
+
+@mock.patch('requests.request')
+def test_request_failed_with_exception_that_doesnt_have_much_information(requests_request):
+    # I found this bug in production, not sure how requests could raise a
+    # Timeout without a 'response' attribute
+    #
+    # I didn't have a stack trace, only a log line:
+    # 'Timeout' object has no attribute 'response'
+    #
+    # so just to be safe I'll handle it here
+    exception = requests.exceptions.Timeout("timeout")
+    delattr(exception, "response")
+    delattr(exception, "request")
+
+    requests_request.side_effect = exception
+
+    c = Client('api.com', 'user', 'token')
+    with pytest.raises(HTTPError) as exc_info:
+        c._request('post', '/endpoint', {"email":"lead@gmail.com"})
+
+    http_error = exc_info.value
+
+    assert str(http_error) == "timeout"
+    assert http_error.original is exception
+    assert http_error.status_code is None
+    assert http_error.response_text is None
