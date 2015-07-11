@@ -78,6 +78,21 @@ def test_handle_job_with_json_without_any_required_keys():
 
     job.delete.assert_called_once_with()
 
+@mock.patch('leadrouter.client.Client')
+def test_handle_client_method_call_raise_exception(Client):
+    client = mock.Mock(['create_lead'])
+    client.create_lead.side_effect = ValueError
+    Client.return_value = client
+
+    job = mock.Mock(['delete'])
+    job.jid = 'j1'
+    job.body = VALID_JOB_BODY
+
+    sub = Subscriber()
+    sub.handle(job)
+
+    job.delete.assert_called_once_with()
+
 def test_consume():
     '''consume is the main entrypoint of Subscriber, just make sure it's calling
     handle() for every loop iteration'''

@@ -26,6 +26,7 @@ class Alerts(object):
         s = msg
         if details:
             s += '\n'
+            s += details.pop('traceback', '')
             s += pprint.pformat(details)
         return s
 

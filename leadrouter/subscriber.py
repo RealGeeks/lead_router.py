@@ -1,4 +1,5 @@
 import json  # todo: instal ujson
+import traceback
 from collections import namedtuple
 
 import beanstalkc
@@ -57,6 +58,7 @@ class Subscriber(object):
                 'response_status': result.response_status,
                 'response_body': result.response_body,
                 'retry': result.retry,
+                'traceback': result.traceback,
             })
             if result.retry:
                 job.release(delay=RETRY_DELAY)
@@ -94,6 +96,7 @@ RequestResult = namedtuple('RequestResult', (
     'error',          # error message string, if success is False
     'response_body',  # full response body when success is False, if available
     'response_status',# status code of response, if available
+    'traceback',      # string with full traceback of handled exception
 ))
 
 def make_request(package):
@@ -107,7 +110,9 @@ def make_request(package):
         return RequestResult(success=False, retry=False,
                              error='invalid package format ({0}): {1}'
                              .format(str(ex), package),
-                             response_body='', response_status=None)
+                             response_body='',
+                             response_status=None,
+                             traceback='')
     try:
         method(**params)
     except client.HTTPError as ex:
@@ -115,17 +120,22 @@ def make_request(package):
             return RequestResult(success=False, retry=False,
                                  error='send failed: ' + str(ex),
                                  response_body=ex.response_text,
-                                 response_status=ex.status_code)
+                                 response_status=ex.status_code,
+                                 traceback='')
         return RequestResult(success=False, retry=True,
                              error='send failed (RETRYING): ' + str(ex),
                              response_body=ex.response_text,
-                             response_status=ex.status_code)
+                             response_status=ex.status_code,
+                             traceback='')
     except Exception as ex:
         return RequestResult(success=False, retry=False,
                              error='send failed: ' + str(ex),
-                             response_body='', response_status=None)
+                             response_body='',
+                             response_status=None,
+                             traceback=traceback.format_exc())
     return RequestResult(success=True, retry=False, error='',
-                         response_body='', response_status=None)
+                         response_body='', response_status=None,
+                         traceback='')
 
 def build_client(package):
     '''Build a client.Client given the package from beanstalkd tube

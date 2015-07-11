@@ -4,3 +4,4 @@
 *.swp
 htmlcov
 .coverage
+*.swo
