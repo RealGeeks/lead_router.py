@@ -33,7 +33,7 @@ def subscriber(beanstalkd_host, beanstalkd_port, beanstalkd_tube, loglevel):
 
 
 def build_logger(level):
-    level = level.upper()
+    level = getattr(logging, level.upper())
     logger = logging.getLogger('leadrouter-subscriber')
     logger.setLevel(level)
     handler = logging.StreamHandler()
