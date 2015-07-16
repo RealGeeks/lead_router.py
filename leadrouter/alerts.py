@@ -2,6 +2,8 @@
 import pprint
 import json
 
+from leadrouter import sentry
+
 class Alerts(object):
     '''Alerts is an interface to both a standard python logger and pagerduty
 
@@ -21,7 +23,9 @@ class Alerts(object):
 
     def critical(self, msg, details={}):
         '''Send ERROR message to logger and send notification to pagerduty'''
-        self.logger.error(self._format(msg, details))
+        msg = self._format(msg, details)
+        self.logger.error(msg)
+        sentry.captureMessage(msg)
 
     def _format(self, msg, details):
         s = msg

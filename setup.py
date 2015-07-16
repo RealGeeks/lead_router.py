@@ -54,7 +54,7 @@ setup(
 
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
 
-    install_requires=['requests', 'beanstalkc', 'click', 'pyyaml'],
+    install_requires=['requests', 'beanstalkc', 'click', 'pyyaml', 'raven'],
     tests_require=['pytest', 'pytest-cov', 'mock', 'httpretty', 'freezegun'],
 
     cmdclass={
