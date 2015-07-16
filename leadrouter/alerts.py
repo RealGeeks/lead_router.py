@@ -1,5 +1,6 @@
 
 import pprint
+import json
 
 class Alerts(object):
     '''Alerts is an interface to both a standard python logger and pagerduty
@@ -27,7 +28,12 @@ class Alerts(object):
         if details:
             s += '\n'
             s += details.pop('traceback', '')
-            s += pprint.pformat(details)
+            # try to render json because it's easier to reuse from other
+            # systems, but fallback to python values, never lose the data
+            try:
+                s += json.dumps(details, indent=2)
+            except (TypeError, ValueError):
+                s += pprint.pformat(details)
         return s
 
 class NullAlerts(object):
