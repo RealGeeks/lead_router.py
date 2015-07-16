@@ -124,8 +124,12 @@ in html, use:
 Each rg2 server has a `leadrouter subscriber` running, and there is a beanstalkd
 for each server.  See [config in rg2](https://github.com/RealGeeks/rg2/blob/master/server_config/supervisord.conf)
 
-To see the current status of all beanstalkd servers, run:
+To see the current status of all beanstalkd servers, run (you'll need to install [beanstool](https://github.com/tyba/beanstool)):
 
     python stats.py
 
-you'll need to install [beanstool](https://github.com/tyba/beanstool)
+We send errors to sentry: https://app.getsentry.com/realgeeks/lead-router-subscriber/
+
+If the error has job as JSON you can send resend this job manually:
+
+    $ leadrouter send --help
