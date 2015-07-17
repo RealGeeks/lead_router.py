@@ -52,17 +52,19 @@ class Subscriber(object):
             return
         result = make_request(package)
         if result.error:
-            self.alerts.critical(result.error, {
+            error_details = {
                 'parsed_job_body': package,
                 'job_id': job.jid,
                 'response_status': result.response_status,
                 'response_body': result.response_body,
                 'retry': result.retry,
                 'traceback': result.traceback,
-            })
+            }
             if result.retry:
+                self.alerts.warning(result.error, error_details)
                 job.release(delay=RETRY_DELAY)
                 return
+            self.alerts.critical(result.error, error_details)
         else:
             self.alerts.debug('job processed', package)
         job.delete()
