@@ -124,7 +124,9 @@ in html, use:
 Each rg2 server has a `leadrouter subscriber` running, and there is a beanstalkd
 for each server.  See [config in rg2](https://github.com/RealGeeks/rg2/blob/master/server_config/supervisord.conf)
 
-We have [graphs of leadrouter tube on beanstalkd](http://grafana.rg-infrastructure.com/dashboard/db/beanstalk-rg2-lead-router)
+We have [graphs of leadrouter tube on beanstalkd](http://grafana.rg-infrastructure.com/dashboard/db/beanstalk-rg2-lead-router). This
+uses [beanstalk-statsd](https://github.com/realgeeks/beanstalk-statsd), configured in [rg2 servers](https://github.com/RealGeeks/puppet-modules/blob/master/rg_app/manifests/init.pp#L19)
+using [puppet](https://github.com/RealGeeks/puppet-modules/tree/master/beanstalk_statsd)
 
 [Sentry errors](https://app.getsentry.com/realgeeks/lead-router-subscriber/). 
 If the error has job as JSON you can send resend this job manually:
