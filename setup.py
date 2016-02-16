@@ -28,22 +28,22 @@ class PyTest(TestCommand):
 
 setup(
     name='leadrouter',
-    version='0.0.1',
+    version='1.0.0',
 
-    description='Python Client to lead_router REST Receiver',
+    description='Python Client to Real Geeks REST API',
     url='https://github.com/RealGeeks/lead_router.py',
 
     author='Igor Sobreira',
     author_email='igor@realgeeks.com',
 
-    license='Closed Source',
+    license='MIT',
 
     classifiers=[
         # How mature is this project? Common values are
         #   3 - Alpha
         #   4 - Beta
         #   5 - Production/Stable
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 5 - Production/Stable',
 
         'Intended Audience :: Developers',
 
