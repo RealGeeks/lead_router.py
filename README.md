@@ -118,23 +118,3 @@ in html, use:
 
     $ coverage html  # you'll probably need to 'pip install coverage' first
     $ open htmlcov/index.html
-
-# Production
-
-Each rg2 server has a `leadrouter subscriber` running, and there is a beanstalkd
-for each server.  See [config in rg2](https://github.com/RealGeeks/rg2/blob/master/server_config/supervisord.conf)
-
-We have [graphs of leadrouter tube on beanstalkd](http://grafana.rg-infrastructure.com/dashboard/db/beanstalk-rg2-lead-router). This
-uses [beanstalk-statsd](https://github.com/realgeeks/beanstalk-statsd), configured in [rg2 servers](https://github.com/RealGeeks/puppet-modules/blob/master/rg_app/manifests/init.pp#L19)
-using [puppet](https://github.com/RealGeeks/puppet-modules/tree/master/beanstalk_statsd)
-
-[Sentry errors](https://app.getsentry.com/realgeeks/lead-router-subscriber/). 
-If the error has job as JSON you can send resend this job manually:
-
-    $ leadrouter send --help
-
-Since rg2 is currently installing this project from master (see rg2 requirements.txt) to
-deploy you can just push to master then run (from server_config):
-
-    $ fab production web.upgrade_leadrouter
-    $ fab production web.restart_leadrouter_subscriber
