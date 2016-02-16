@@ -1,12 +1,13 @@
 
-# Client to `lead_router`
+# Python client to Real Geeks Leads API
 
 Install it
 
     $ pip install git+ssh://git@github.com/RealGeeks/lead_router.py.git
 
-First get a `user` and `token` from the `lead_router` project, it will
-identify your project and which permissions you have.
+First get a `user` and `token` from the `lead_router` project, it will identify your project and which permissions you have.
+
+If you're a Real Geeks client write a message to [support](https://www.realgeeks.com/support/) asking for credentials for the Incoming Leads API for your site.
 
 ```python
 import leadrouter
@@ -15,7 +16,7 @@ client = leadrouter.Client('receivers.leadrouter.realgeeks.com',
                            user='me', token='secret')
 ```
 
-with a `Client` object created use one the methods bellow:
+with a `Client` object created use one the methods below. For details on which fields you can send for `lead` and `activities` check our [documentation](http://docs.realgeeks.com/outgoing_leads_api)
 
 #### `create_lead(site_uuid, lead)`
 
@@ -23,8 +24,6 @@ Send a new lead.
 
  - `site_uuid` is a string with the RG2 Site UUID
  - `lead` id a dictionary with lead fields
-
-See [`https://github.com/RealGeeks/lead_router/wiki/Incoming-API#post-sitessite_uuidleads`](https://github.com/RealGeeks/lead_router/wiki/Incoming-API#post-sitessite_uuidleads)
 
 #### `update_lead(site_uuid, lead_uuid, lead)`
 
@@ -34,8 +33,6 @@ Update an existing lead.
  - `lead_uuid` is a string with the Lead Manager Lead UUID
  - `lead` id a dictionary with lead fields to be overriden
 
-See [`https://github.com/RealGeeks/lead_router/wiki/Incoming-API#patch-sitessite_uuidleadslead_uuid`](https://github.com/RealGeeks/lead_router/wiki/Incoming-API#patch-sitessite_uuidleadslead_uuid)
-
 #### `add_activities(site_uuid, lead_uuid, activities)`
 
 Add activities to an existing lead.
@@ -44,16 +41,12 @@ Add activities to an existing lead.
  - `lead_uuid` is a string with the Lead Manager Lead UUID
  - `activities` is a list of dictionaries, each dictionary is an activitity
 
-See [`https://github.com/RealGeeks/lead_router/wiki/Incoming-API#postsitessite_uuidleadslead_uuidactivities`](https://github.com/RealGeeks/lead_router/wiki/Incoming-API#postsitessite_uuidleadslead_uuidactivities)
-
 #### `create_potential_seller_lead(site_uuid, lead)`
 
 Send a new potential seller lead.  Somebody who attempted to view a property valuation but didn't sign-up to give contact details. So all we have is the property they looked at.
 
  - `site_uuid` is a string with the RG2 Site UUID
  - `lead` id a dictionary with lead fields
-
-See [`https://github.com/RealGeeks/lead_router/wiki/Incoming-API#post-sitessite_uuidpotential-seller-leads`](https://github.com/RealGeeks/lead_router/wiki/Incoming-API#post-sitessite_uuidpotential-seller-leads)
 
 ## Exceptions
 
@@ -65,7 +58,6 @@ or 500 the exception object will have two useful attributes;
 
  - `status_code`: integer with the response status code
  - `response_text`: original response body as string
-
 
 ## Async send
 
