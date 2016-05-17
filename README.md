@@ -82,6 +82,12 @@ make sure it's using the same `beanstalkd` and same tube. The defaults should ju
 
 There is also a `DebugPublisher` available for development.  If you have a project using `Publisher` but don't want to use `beanstalkd` locally, it will record all method calls in a file for debugging.
 
+# Deployment on AWS
+
+There is a docker image, quay.io/realgeeks/leadrouter_subscriber.  Use this but override the command to pass in the right options:
+
+`leadrouter subscriber --beanstalkd-host beanstalk --beanstalkd-port 11300 --beanstalkd-tube leadrouter --loglevel debug`
+
 # Development
 
 To help with development, first clone and create a virtualenv.  Inside the project folder
