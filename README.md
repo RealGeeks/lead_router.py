@@ -82,15 +82,15 @@ make sure it's using the same `beanstalkd` and same tube. The defaults should ju
 
 There is also a `DebugPublisher` available for development.  If you have a project using `Publisher` but don't want to use `beanstalkd` locally, it will record all method calls in a file for debugging.
 
-# Deployment on AWS
+### Deployment
 
-There is a docker image, quay.io/realgeeks/leadrouter_subscriber.  Use this but override the command to pass in the right options:
+If you want to use Async Send there is a docker image, quay.io/realgeeks/leadrouter_subscriber.  Use this but override the command to pass in the right options:
 
 `leadrouter subscriber --beanstalkd-host beanstalk --beanstalkd-port 11300 --beanstalkd-tube leadrouter --loglevel debug`
 
 # Development
 
-To help with development, first clone and create a virtualenv.  Inside the project folder
+To help with development, first clone and create a virtualenv. Inside the project folder
 run:
 
     $ pip install -e .
@@ -114,5 +114,5 @@ If you're familiar with py.test custom arguments can be provided:
 It will calculate the coverage, if you want to view the coverage report
 in html, use:
 
-    $ coverage html  # you'll probably need to 'pip install coverage' first
+    $ coverage html  # you need to 'pip install coverage' first
     $ open htmlcov/index.html
