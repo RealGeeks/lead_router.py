@@ -8,12 +8,11 @@ class PyTest(TestCommand):
 
     def initialize_options(self):
         TestCommand.initialize_options(self)
-        self.pytest_args = [
-            '--cov-config', '.coveragerc',
-            '--cov', 'leadrouter',
-            '--cov-report', 'term-missing',
-            '--tb=short',
-        ]
+        self.pytest_default_args = ('--cov-config=.coveragerc '
+                                    '--cov=leadrouter '
+                                    '--cov-report=term-missing '
+                                    '--tb=short ')
+        self.pytest_args = []
 
     def finalize_options(self):
         TestCommand.finalize_options(self)
@@ -23,7 +22,7 @@ class PyTest(TestCommand):
     def run_tests(self):
         # import here, cause outside the eggs aren't loaded
         import pytest
-        errno = pytest.main(self.pytest_args)
+        errno = pytest.main(self.pytest_default_args + ' '.join(self.pytest_args))
         sys.exit(errno)
 
 setup(

@@ -105,10 +105,13 @@ running:
 
 then run tests:
 
-    $ python setup.py test
+    $ pip install tox
+    $ tox
 
-If you're familiar with py.test custom arguments can be provided:
+If you're familiar with py.test custom arguments can be provided. This way you can run specific
+tests in a specific environment:
 
+    $ source .tox/py26/bin/activate
     $ python setup.py test --pytest-args='-v --tb=short' 
 
 It will calculate the coverage, if you want to view the coverage report

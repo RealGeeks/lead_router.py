@@ -99,7 +99,7 @@ def test_request_returns_invalid_status_code_without_nice_error_message():
 
     http_error = exc_info.value
 
-    assert str(http_error) == '503 Server Error: Service Unavailable'
+    assert str(http_error) == '503 Server Error: Service Unavailable for url: http://api.com/endpoint'
     assert http_error.status_code == 503
     assert http_error.response_text == "<strong>Sorry...</strong>"
 
