@@ -84,9 +84,11 @@ There is also a `DebugPublisher` available for development.  If you have a proje
 
 ### Deployment
 
-If you want to use Async Send there is a docker image, quay.io/realgeeks/leadrouter_subscriber.  Use this but override the command to pass in the right options:
-
-`leadrouter subscriber --beanstalkd-host beanstalk --beanstalkd-port 11300 --beanstalkd-tube leadrouter --loglevel debug`
+If you want to use Async Send there is a docker image, quay.io/realgeeks/leadrouter_subscriber. Set the following environment variables:
+  * BEANSTALK_HOST
+  * BEANSTALK_PORT
+  * BEANSTALK_TUBE
+  * LOGLEVEL
 
 # Development
 
