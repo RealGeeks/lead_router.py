@@ -88,4 +88,4 @@ def wrap_requests_exception(ex):
 def prefix_http(host):
     if host.startswith(('http://', 'https://')):
         return host
-    return 'http://'+host
+    return 'https://'+host
