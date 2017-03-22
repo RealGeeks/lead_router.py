@@ -17,34 +17,30 @@ class Alerts(object):
 
     def info(self, msg, details={}):
         '''Send INFO message to logger'''
-        self.logger.info(self._format(msg, details))
+        self.logger.info(self._format('INFO', msg, details))
 
     def debug(self, msg, details={}):
         '''Send DEBUG message to logger'''
-        self.logger.debug(self._format(msg, details))
+        self.logger.debug(self._format('DEBUG', msg, details))
 
     def warning(self, msg, details={}):
         '''Send WARNING message to logger'''
-        self.logger.warning(self._format(msg, details))
+        self.logger.warning(self._format('WARNING', msg, details))
 
     def critical(self, msg, details={}):
         '''Send ERROR message to logger and send notification to pagerduty'''
-        msg = self._format(msg, details)
+        msg = self._format('ERROR', msg, details)
         self.logger.error(msg)
         sentry.captureMessage(msg)
 
-    def _format(self, msg, details):
-        s = msg
-        if details:
-            s += '\n'
-            s += details.pop('traceback', '')
-            # try to render json because it's easier to reuse from other
-            # systems, but fallback to python values, never lose the data
-            try:
-                s += json.dumps(details, indent=2)
-            except (TypeError, ValueError):
-                s += pprint.pformat(details)
-        return s
+    def _format(self, level, msg, details):
+        data = details.copy()
+        data['log_message'] = msg
+        data['log_level'] = level
+        try:
+            return json.dumps(data)
+        except (TypeError, ValueError):
+            return "%s" % data
 
 class NullAlerts(object):
     def info(self, msg, details={}):

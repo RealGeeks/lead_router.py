@@ -84,11 +84,11 @@ There is also a `DebugPublisher` available for development.  If you have a proje
 
 ### Deployment
 
-If you want to use Async Send there is a docker image, quay.io/realgeeks/leadrouter_subscriber. Set the following environment variables:
-  * BEANSTALK_HOST
-  * BEANSTALK_PORT
-  * BEANSTALK_TUBE
-  * LOGLEVEL
+If you want to use Async Send there is a docker image, `quay.io/realgeeks/leadrouter_subscriber`. Set the following environment variables:
+  * `BEANSTALK_HOST`
+  * `BEANSTALK_PORT`
+  * `BEANSTALK_TUBE`
+  * `LOGLEVEL`
 
 # Development
 
