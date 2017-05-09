@@ -16,7 +16,7 @@ client = leadrouter.Client('receivers.leadrouter.realgeeks.com',
                            user='me', token='secret')
 ```
 
-with a `Client` object created use one the methods below. For details on which fields you can send for `lead` and `activities` check our [documentation](http://docs.realgeeks.com/outgoing_leads_api)
+with a `Client` object created use one the methods below. For details on which fields you can send for `lead` and `activities` check our [documentation](https://developers.realgeeks.com/incoming-leads-api/)
 
 #### `create_lead(site_uuid, lead)`
 
