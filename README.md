@@ -20,7 +20,7 @@ with a `Client` object created use one the methods below. For details on which f
 
 #### `create_lead(site_uuid, lead)`
 
-Send a new lead.
+Send a new [lead](https://developers.realgeeks.com/leads/).
 
  - `site_uuid` is a string with the RG2 Site UUID
  - `lead` id a dictionary with lead fields
@@ -35,7 +35,7 @@ Update an existing lead.
 
 #### `add_activities(site_uuid, lead_uuid, activities)`
 
-Add activities to an existing lead.
+Add [activities](https://developers.realgeeks.com/activities/) to an existing lead.
 
  - `site_uuid` is a string with the RG2 Site UUID
  - `lead_uuid` is a string with the Lead Manager Lead UUID
