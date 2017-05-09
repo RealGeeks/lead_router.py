@@ -3,7 +3,7 @@
 
 Install it
 
-    $ pip install git+ssh://git@github.com/RealGeeks/lead_router.py.git
+    $ pip install leadrouter
 
 First get a `user` and `token` from the `lead_router` project, it will identify your project and which permissions you have.
 
