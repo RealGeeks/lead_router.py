@@ -27,7 +27,7 @@ class PyTest(TestCommand):
 
 setup(
     name='leadrouter',
-    version='1.0.1',
+    version='2.0.0',
 
     description='Python Client to Real Geeks REST API',
     url='https://github.com/RealGeeks/lead_router.py',
@@ -53,8 +53,8 @@ setup(
 
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
 
-    install_requires=['requests', 'beanstalkc', 'click', 'pyyaml', 'raven'],
-    tests_require=['pytest', 'pytest-cov', 'mock', 'httpretty', 'freezegun'],
+    install_requires=['requests', 'click', 'raven'],
+    tests_require=['pytest', 'pytest-cov', 'mock', 'httpretty', 'freezegun','beanstalkc','pyyaml'],
 
     cmdclass={
         'test': PyTest,

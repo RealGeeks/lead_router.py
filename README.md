@@ -63,6 +63,8 @@ or 500 the exception object will have two useful attributes;
 
 We have a client implementation that instead of sending requests directly just put them in a queue to be sent asynchronously, it's the `Publisher` and `subscriber`.
 
+First, you will need to install the `beanstalkc` and `pyyaml` client libraries from pip (optional dependencies)
+
 Use `Publisher` the same way you would use `Client`:
 
 ```python

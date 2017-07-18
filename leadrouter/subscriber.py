@@ -2,8 +2,6 @@ import json  # todo: instal ujson
 import traceback
 from collections import namedtuple
 
-import beanstalkc
-
 from . import client
 from .alerts import NullAlerts
 
@@ -18,6 +16,7 @@ class Subscriber(object):
         self.alerts = alerts or NullAlerts()
 
     def connect(self):
+        import beanstalkc
         self.queue = beanstalkc.Connection(self.host, self.port)
         self.queue.watch(self.tube)
         self.queue.ignore('default')

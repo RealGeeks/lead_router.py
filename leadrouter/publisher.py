@@ -1,7 +1,6 @@
 import json  # todo: instal ujson
 import datetime
 
-import beanstalkc
 
 from . import timestamp
 
@@ -41,6 +40,7 @@ class Publisher(object):
         self.queue = None
 
     def connect(self):
+        import beanstalkc
         self.queue = beanstalkc.Connection(self.bean_host, self.bean_port)
         self.queue.use(self.bean_tube)
 
@@ -87,6 +87,7 @@ class Publisher(object):
         It won't retry on failure but it knows how to reconnect if the connection
         was lost at some point after connect()
         '''
+        import beanstalkc
         if not self.queue:
             self.connect()
         body = json.dumps({
