@@ -27,7 +27,7 @@ class PyTest(TestCommand):
 
 setup(
     name='leadrouter',
-    version='2.0.0',
+    version='2.0.1',
 
     description='Python Client to Real Geeks REST API',
     url='https://github.com/RealGeeks/lead_router.py',
