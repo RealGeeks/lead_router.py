@@ -31,27 +31,28 @@ class Client(object):
         self.host = prefix_http(host)
         self.auth = requests.auth.HTTPBasicAuth(user, token)
 
-    def create_lead(self, site_uuid, lead):
+    def create_lead(self, site_uuid, lead, headers={}):
         url = '/rest/sites/{0}/leads'.format(site_uuid)
-        return self._request('post', url, lead)
+        return self._request('post', url, lead, headers=headers)
 
-    def update_lead(self, site_uuid, lead_uuid, lead):
+    def update_lead(self, site_uuid, lead_uuid, lead, headers={}):
         url = '/rest/sites/{0}/leads/{1}'.format(site_uuid, lead_uuid)
-        return self._request('patch', url, lead)
+        return self._request('patch', url, lead, headers=headers)
 
-    def add_activities(self, site_uuid, lead_uuid, activities):
+    def add_activities(self, site_uuid, lead_uuid, activities, headers={}):
         url = '/rest/sites/{0}/leads/{1}/activities'.format(site_uuid, lead_uuid)
-        return self._request('post', url, activities)
+        return self._request('post', url, activities, headers=headers)
 
-    def create_potential_seller_lead(self, site_uuid, lead):
+    def create_potential_seller_lead(self, site_uuid, lead, headers={}):
         url = '/rest/sites/{0}/potential-seller-leads'.format(site_uuid)
-        return self._request('post', url, lead)
+        return self._request('post', url, lead, headers=headers)
 
-    def _request(self, method, url, body):
+    def _request(self, method, url, body, headers={}):
+        hdrs = {'Content-Type': 'application/json; charset=utf-8'}
+        hdrs.update(headers)
         try:
             resp = requests.request(method, self.host+url, data=json.dumps(body),
-                                    timeout=2, auth=self.auth,
-                                    headers={'content-type': 'application/json; charset=utf-8'})
+                                    timeout=2, auth=self.auth, headers=hdrs)
             resp.raise_for_status()
         except requests.exceptions.RequestException as ex:
             raise wrap_requests_exception(ex)
