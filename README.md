@@ -123,3 +123,8 @@ in html, use:
 
     $ coverage html  # you need to 'pip install coverage' first
     $ open htmlcov/index.html
+
+Upload version to pypi:
+
+    $ python setup.py sdist
+    $ twine upload dist/*
