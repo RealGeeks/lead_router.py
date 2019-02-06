@@ -84,6 +84,44 @@ make sure it's using the same `beanstalkd` and same tube. The defaults should ju
 
 There is also a `DebugPublisher` available for development.  If you have a project using `Publisher` but don't want to use `beanstalkd` locally, it will record all method calls in a file for debugging.
 
+### Resend jobs from async client
+
+When you use the Async send feature above sometimes a job could fail, most times it will retry but 
+errors like validation errors will not retry. First look for the JSON body of a job, it will be
+logged and sent to Sentry. It looks like this:
+
+```json
+{
+	"parsed_job_body": {
+		"host": "receivers.leadrouter.realgeeks.com",
+		"params": {
+			"lead_uuid": "8bac1437ad7b5433b248ebe8bf708b24",
+			"site_uuid": "089df7bf-db46-4453-b29a-6b02700c4426",
+			"activities": [{
+				"source": "My App",
+				"type": "property_viewed",
+				"property": {"full_baths": 2.5},
+				"created": "2019-02-06T21:19:51.284522+00:00"
+			}]
+		},
+		"method": "add_activities",
+		"auth": ["User", "Password"]
+	},
+	"retry": false,
+	"log_level": "ERROR",
+	"job_id": 1005832440,
+	"log_message": "send failed: Property field 'full_baths' is not a valid integer.",
+	"response_status": 422,
+	"response_body": "{\"error\": \"Property field 'full_baths' is not a valid integer.\"}\n",
+	"traceback": ""
+}
+```
+
+Note how it failed to send to the `lead_router` due to a validation error, these errors will not
+retry. Now save this json in a file `job.json`, modify the body to fix it and resend with:
+
+    $ leadrouter send job.json
+
 ### Deployment
 
 If you want to use Async Send there is a docker image, `quay.io/realgeeks/leadrouter_subscriber`. Set the following environment variables:
