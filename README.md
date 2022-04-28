@@ -130,7 +130,7 @@ If you want to use Async Send there is a docker image, `quay.io/realgeeks/leadro
   * `BEANSTALK_TUBE`
   * `LOGLEVEL`
 
-# Development
+# Development [virtualenv]
 
 To help with development, first clone and create a virtualenv. Inside the project folder
 run:
@@ -155,6 +155,19 @@ tests in a specific environment:
 
     $ source .tox/py26/bin/activate
     $ python setup.py test --pytest-args='-v --tb=short' 
+
+# Development [Docker]
+To build your docker environment, run: 
+
+    $ docker-compose build
+
+Now, open a shell in the docker container:
+
+    $ docker-compose run leadrouter_subscriber bash
+
+then run tests:
+
+    root@container-sha:/usr/src/app# tox
 
 It will calculate the coverage, if you want to view the coverage report
 in html, use:
