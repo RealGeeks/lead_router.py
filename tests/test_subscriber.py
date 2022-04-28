@@ -139,7 +139,7 @@ def assert_request_made_from_valid_job_body(request):
     '''Assert the given httpretty request was made using VALID_JOB_BODY spec'''
     assert request.path == '/rest/sites/123-abc/leads'
     assert request.method == 'POST'
-    assert request.body == '{"email": "lead@gmail.com"}'
+    assert request.body == b'{"email": "lead@gmail.com"}'
     assert request.headers['Host'] == 'api.com'
     assert request.headers['Authorization'] == 'Basic dXNlcjp0b2tlbg=='
     assert request.headers['Content-Type'] == 'application/json; charset=utf-8'

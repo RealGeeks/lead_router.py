@@ -1,13 +1,14 @@
-FROM alpine:3.4
+FROM python:2.7-stretch
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-RUN apk add --no-cache python py-pip supervisor ca-certificates && rm -rf /root/.cache
+RUN apt-get update && apt-get install -y supervisor
 
 COPY supervisord.ini /etc/supervisor.d/leadrouter.ini
 
 COPY . /usr/src/app
-RUN pip install beanstalkc pyyaml && python setup.py install
+
+RUN pip install raven click beanstalkc3 pyyaml tox && python setup.py install
 
 CMD ["supervisord","-n", "-c", "/etc/supervisord.conf"]

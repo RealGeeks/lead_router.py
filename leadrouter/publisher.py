@@ -29,7 +29,7 @@ class Publisher(object):
     '''
 
     def __init__(self, host, user, token,
-                 beanstalkd_host='localhost',
+                 beanstalkd_host='beanstalk',
                  beanstalkd_port=11300,
                  beanstalkd_tube='leadrouter'):
         self.host = host

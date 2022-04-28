@@ -28,7 +28,7 @@ def last_package(tube):
     Return last package put in the queue. Fail test if queue is empty
     '''
     # connect to beanstalk watching only the current tube
-    bean_conn = beanstalkc.Connection('localhost', 11300)
+    bean_conn = beanstalkc.Connection('beanstalk', 11300)
     bean_conn.watch(tube)
     bean_conn.ignore('default')
     job = bean_conn.reserve(timeout=0.5)

@@ -1,12 +1,19 @@
-beanstalk:
-  image: schickling/beanstalkd
-leadrouter_subscriber:
-  build: .
-  links:
-    - beanstalk
-  environment:
-    - BEANSTALK_HOST=beanstalk
-    - BEANSTALK_PORT=11300
-    - BEANSTALK_TUBE=leadrouter
-    - WORKERS=5
-    - LOGLEVEL=debug
+version: '3.2'
+services:
+  beanstalk:
+    image: schickling/beanstalkd
+  leadrouter_subscriber:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/usr/src/app
+    links:
+      - beanstalk
+    environment:
+      - BEANSTALK_HOST=beanstalk
+      - BEANSTALK_PORT=11300
+      - BEANSTALK_TUBE=leadrouter
+      - WORKERS=5
+      - LOGLEVEL=debug
+  
