@@ -69,7 +69,7 @@ def wrap_requests_exception(ex):
     if getattr(ex, 'response', None) is not None:
         try:
             message = ex.response.json()['error']
-        except ValueError:
+        except (ValueError, KeyError):
             message = str(ex)
         status_code = ex.response.status_code
         response_text = ex.response.text

@@ -103,7 +103,7 @@ def test_request_sent():
 
     assert request.path == '/endpoint'
     assert request.method == 'PUT'
-    assert request.body == '{"email": "lead@gmail.com"}'
+    assert request.body == b'{"email": "lead@gmail.com"}'
     assert request.headers['Host'] == 'api.com'
     assert request.headers['Authorization'] == 'Basic dXNlcjp0b2tlbg=='
     assert request.headers['Content-Type'] == 'application/json; charset=utf-8'
