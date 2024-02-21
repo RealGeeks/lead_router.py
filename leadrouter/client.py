@@ -24,7 +24,7 @@ class Client(object):
     '''
     Client is a simple direct http client to the lead_router REST API
 
-    http://docs.realgeeks.com/incoming_leads_api
+    http://developers.realgeeks.com/incoming-leads-api
     '''
 
     def __init__(self, host, user, token):
