@@ -6,3 +6,5 @@ htmlcov
 .coverage
 *.swo
 .tox
+build/
+dist/
