@@ -1,4 +1,4 @@
-FROM python:2.7-stretch
+FROM python:3.7.17-buster
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
